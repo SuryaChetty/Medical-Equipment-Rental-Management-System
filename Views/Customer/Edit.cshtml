@@ -1,0 +1,62 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.Customer
+
+@{
+    ViewBag.Title = "Edit Customer";
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Edit Customer</h2>
+    <p class="dashboard-subtitle">Update customer information.</p>
+</div>
+
+<div class="dashboard-panel">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.CustomerId)
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.CustomerName, "Customer Name", new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CustomerName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Email, new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Phone, new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Address, new { @class = "form-label fw-semibold" })
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="fa fa-save me-2"></i>Update Customer
+        </button>
+
+        <a href="@Url.Action("Index")" class="btn btn-light border ms-2">
+            Cancel
+        </a>
+    }
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

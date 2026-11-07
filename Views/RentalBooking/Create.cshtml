@@ -1,0 +1,129 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.RentalBooking
+
+@{
+    ViewBag.Title = "New Rental Booking";
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Create Rental Booking</h2>
+    <p class="dashboard-subtitle">
+        Select a customer and medical equipment to create a booking.
+    </p>
+</div>
+
+<div class="dashboard-panel">
+
+    @using (Html.BeginForm("Create", "RentalBooking", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.CustomerId,
+                    "Select Customer",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(m => m.CustomerId,
+                    (IEnumerable<SelectListItem>)ViewBag.CustomerId,
+                    "-- Select Customer --",
+                    new { @class = "form-select" })
+
+                @Html.ValidationMessageFor(m => m.CustomerId,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.EquipmentId,
+                    "Select Equipment",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(m => m.EquipmentId,
+                    (IEnumerable<SelectListItem>)ViewBag.EquipmentId,
+                    "-- Select Equipment --",
+                    new { @class = "form-select" })
+
+                @Html.ValidationMessageFor(m => m.EquipmentId,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.StartDate,
+                    "Rental Start Date",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.StartDate,
+                    "{0:yyyy-MM-dd}",
+                    new
+                         {
+                        @class = "form-control",
+                        type = "date",
+                        min = DateTime.Today.ToString("yyyy-MM-dd"),
+                        id = "StartDate"
+                    })
+
+                @Html.ValidationMessageFor(m => m.StartDate,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.EndDate,
+                    "Rental End Date",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.EndDate,
+                    "{0:yyyy-MM-dd}",
+                    new
+                         {
+                        @class = "form-control",
+                        type = "date",
+                        min = DateTime.Today.ToString("yyyy-MM-dd"),
+                        id = "EndDate"
+                    })
+
+                @Html.ValidationMessageFor(m => m.EndDate,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Quantity,
+                    "Required Quantity",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.Quantity,
+                    new
+                         {
+                        @class = "form-control",
+                        type = "number",
+                        min = "1",
+                        max = "100",
+                        id = "Quantity"
+                    })
+
+                @Html.ValidationMessageFor(m => m.Quantity,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-12">
+                <div class="alert alert-info mb-0">
+                    <i class="fa fa-info-circle me-2"></i>
+                    The final rental amount and stock availability
+                    will be calculated and verified by the server.
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="fa fa-calendar-check me-2"></i>Create Booking
+        </button>
+
+        <a href="@Url.Action("Index")"
+           class="btn btn-light border ms-2">
+            Cancel
+        </a>
+    }
+</div>

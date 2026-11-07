@@ -1,0 +1,174 @@
+﻿
+@model IEnumerable<Medical_Equipment_Rental_Management_System.Models.RentalBooking>
+
+@{
+    ViewBag.Title = "Rental Bookings";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="dashboard-title">Rental Bookings</h2>
+        <p class="dashboard-subtitle">
+            Manage medical equipment rental bookings.
+        </p>
+    </div>
+
+    <a href="@Url.Action("Create")" class="btn btn-primary">
+        <i class="fa fa-plus me-2"></i>New Booking
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close"
+                data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["Error"]
+        <button type="button" class="btn-close"
+                data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="dashboard-panel">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Customer</th>
+                    <th>Equipment</th>
+                    <th>Rental Period</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>#@item.BookingId</td>
+
+                            <td>@item.Customer.CustomerName</td>
+
+                            <td>@item.Equipment.EquipmentName</td>
+
+                            <td>
+                                @item.StartDate.ToString("dd-MMM-yyyy")
+                                <br />
+                                <small class="text-muted">
+                                    to @item.EndDate.ToString("dd-MMM-yyyy")
+                                </small>
+                            </td>
+
+                            <td>@item.Quantity</td>
+
+                            <td class="fw-semibold">
+                                ₹@item.TotalAmount.ToString("N2")
+                            </td>
+
+                            <td>
+                                @if (item.BookingStatus == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+                                }
+                                else if (item.BookingStatus == "Confirmed")
+                                {
+                                    <span class="badge bg-success">
+                                        Confirmed
+                                    </span>
+                                }
+                                else if (item.BookingStatus == "Cancelled")
+                                {
+                                    <span class="badge bg-danger">
+                                        Cancelled
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        Completed
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <!-- View Button -->
+                                <a href="@Url.Action("Details",
+                                    new { id = item.BookingId })"
+                                   class="btn btn-sm btn-outline-info"
+                                   title="View">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+
+                                @if (item.BookingStatus == "Pending" ||
+                                     item.BookingStatus == "Confirmed")
+                                {
+                                    <!-- Edit Button -->
+                                    <a href="@Url.Action("Edit",
+                                        new { id = item.BookingId })"
+                                       class="btn btn-sm btn-outline-primary"
+                                       title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+
+                                    <!-- Pay Now Button -->
+                                    if (item.BookingStatus == "Pending")
+                                    {
+                                        <a href="@Url.Action("Create",
+                                            "Payment",
+                                            new { id = item.BookingId })"
+                                           class="btn btn-sm btn-success"
+                                           title="Pay Now">
+                                            <i class="fa fa-credit-card"></i>
+                                            Pay Now
+                                        </a>
+                                    }
+
+                                    <!-- Cancel Button -->
+                                    using (Html.BeginForm("Cancel",
+                                        "RentalBooking",
+                                        new { id = item.BookingId },
+                                        FormMethod.Post,
+                                        new { style = "display:inline" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                title="Cancel"
+                                                onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8"
+                            class="text-center text-muted py-4">
+                            No bookings found. Create your first booking.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

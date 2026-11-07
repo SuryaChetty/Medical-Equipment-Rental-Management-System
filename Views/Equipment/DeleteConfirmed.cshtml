@@ -1,0 +1,52 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.Equipment
+
+@{
+    ViewBag.Title = "Deactivate Equipment";
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Deactivate Equipment</h2>
+    <p class="dashboard-subtitle">
+        Review equipment details before deactivation.
+    </p>
+</div>
+
+<div class="dashboard-panel">
+
+    <div class="alert alert-warning">
+        Are you sure you want to deactivate this equipment?
+    </div>
+
+    <dl class="row">
+        <dt class="col-md-3">Equipment ID</dt>
+        <dd class="col-md-9">@Model.EquipmentId</dd>
+
+        <dt class="col-md-3">Equipment Name</dt>
+        <dd class="col-md-9">@Model.EquipmentName</dd>
+
+        <dt class="col-md-3">Category</dt>
+        <dd class="col-md-9">@Model.Category</dd>
+
+        <dt class="col-md-3">Price Per Day</dt>
+        <dd class="col-md-9">₹@Model.PricePerDay.ToString("N2")</dd>
+
+        <dt class="col-md-3">Stock</dt>
+        <dd class="col-md-9">@Model.Stock</dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Equipment",
+        new { id = Model.EquipmentId }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn btn-danger">
+            Confirm Deactivation
+        </button>
+
+        <a href="@Url.Action("Index")"
+           class="btn btn-light border ms-2">
+            Cancel
+        </a>
+    }
+</div>

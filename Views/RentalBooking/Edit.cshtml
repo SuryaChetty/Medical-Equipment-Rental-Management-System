@@ -1,0 +1,119 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.RentalBooking
+
+@{
+    ViewBag.Title = "Edit Booking";
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Edit Rental Booking</h2>
+    <p class="dashboard-subtitle">
+        Update customer, equipment and rental dates.
+    </p>
+</div>
+
+<div class="dashboard-panel">
+
+    @using (Html.BeginForm("Edit", "RentalBooking", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.BookingId)
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.CustomerId,
+                    "Customer",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(m => m.CustomerId,
+                    (IEnumerable<SelectListItem>)ViewBag.CustomerId,
+                    "-- Select Customer --",
+                    new { @class = "form-select" })
+
+                @Html.ValidationMessageFor(m => m.CustomerId,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.EquipmentId,
+                    "Equipment",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(m => m.EquipmentId,
+                    (IEnumerable<SelectListItem>)ViewBag.EquipmentId,
+                    "-- Select Equipment --",
+                    new { @class = "form-select" })
+
+                @Html.ValidationMessageFor(m => m.EquipmentId,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.StartDate,
+                    "Start Date",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.StartDate,
+                    "{0:yyyy-MM-dd}",
+                    new
+                         {
+                        @class = "form-control",
+                        type = "date",
+                        min = DateTime.Today.ToString("yyyy-MM-dd")
+                    })
+
+                @Html.ValidationMessageFor(m => m.StartDate,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.EndDate,
+                    "End Date",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.EndDate,
+                    "{0:yyyy-MM-dd}",
+                    new
+                         {
+                        @class = "form-control",
+                        type = "date",
+                        min = DateTime.Today.ToString("yyyy-MM-dd")
+                    })
+
+                @Html.ValidationMessageFor(m => m.EndDate,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Quantity,
+                    "Quantity",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.Quantity,
+                    new
+                         {
+                        @class = "form-control",
+                        type = "number",
+                        min = "1",
+                        max = "100"
+                    })
+
+                @Html.ValidationMessageFor(m => m.Quantity,
+                    "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="fa fa-save me-2"></i>Update Booking
+        </button>
+
+        <a href="@Url.Action("Index")"
+           class="btn btn-light border ms-2">
+            Cancel
+        </a>
+    }
+</div>

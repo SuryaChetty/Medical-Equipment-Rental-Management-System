@@ -1,0 +1,140 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.Equipment
+
+@{
+    ViewBag.Title = "Add Equipment";
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Add New Equipment</h2>
+    <p class="dashboard-subtitle">
+        Enter medical equipment information.
+    </p>
+</div>
+
+<div class="dashboard-panel">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.EquipmentName,
+                    "Equipment Name",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.EquipmentName,
+                    new
+                         {
+                             @class = "form-control",
+                    placeholder = "Example: Wheelchair"
+                         })
+
+                @Html.ValidationMessageFor(m => m.EquipmentName,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Category,
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.DropDownListFor(m => m.Category,
+                    new SelectList(new[]
+                    {
+                        "Mobility",
+                        "Respiratory",
+                        "Hospital Furniture",
+                        "Monitoring",
+                        "Rehabilitation"
+                    }),
+                    "-- Select Category --",
+                    new { @class = "form-select" })
+
+                @Html.ValidationMessageFor(m => m.Category,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-12">
+                @Html.LabelFor(m => m.Description,
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextAreaFor(m => m.Description,
+                    new
+                         {
+                             @class = "form-control",
+                    rows = "3",
+                    placeholder = "Enter equipment description"
+                         })
+
+                @Html.ValidationMessageFor(m => m.Description,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.PricePerDay,
+                    "Rental Price Per Day (₹)",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.PricePerDay,
+                    new
+                         {
+                             @class = "form-control",
+                    type = "number",
+                    min = "1",
+                    step = "0.01"
+                         })
+
+                @Html.ValidationMessageFor(m => m.PricePerDay,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.Stock,
+                    "Available Stock",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.Stock,
+                    new
+                         {
+                             @class = "form-control",
+                    type = "number",
+                    min = "0"
+                         })
+
+                @Html.ValidationMessageFor(m => m.Stock,
+                    "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-12">
+                @Html.LabelFor(m => m.ImageUrl,
+                    "Equipment Image URL",
+                    new { @class = "form-label fw-semibold" })
+
+                @Html.TextBoxFor(m => m.ImageUrl,
+                    new
+                         {
+                             @class = "form-control",
+                    placeholder = "Enter image URL (optional)"
+                         })
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="fa fa-save me-2"></i>Save Equipment
+        </button>
+
+        <a href="@Url.Action("Index")"
+           class="btn btn-light border ms-2">
+            Cancel
+        </a>
+    }
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

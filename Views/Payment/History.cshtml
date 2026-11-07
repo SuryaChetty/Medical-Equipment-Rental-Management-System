@@ -1,0 +1,70 @@
+﻿
+@model IEnumerable<Medical_Equipment_Rental_Management_System.Models.Payment>
+
+@{
+    ViewBag.Title = "Payment History";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="mb-3">
+        <h2>Payment History</h2>
+        <p class="text-muted">View all recorded payment transactions.</p>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body table-responsive">
+
+            <table class="table table-striped table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Booking ID</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Payment ID (Razorpay)</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.PaymentId</td>
+                                <td>@item.BookingId</td>
+                                <td>
+                                    @(item.RentalBooking != null &&
+                                      item.RentalBooking.Customer != null
+                                        ? item.RentalBooking.Customer.CustomerName
+                                        : "-")
+                                </td>
+                                <td>₹@item.Amount.ToString("N2")</td>
+                                <td>@(item.RazorpayPaymentId ?? "-")</td>
+                                <td>@item.PaymentStatus</td>
+                                <td>@item.PaymentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                No payment history available.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <a href="@Url.Action("Index", "Payment")"
+               class="btn btn-secondary">
+                Back to Payments
+            </a>
+
+        </div>
+    </div>
+</div>

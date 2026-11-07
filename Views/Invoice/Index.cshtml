@@ -1,0 +1,77 @@
+﻿
+@model IEnumerable<Medical_Equipment_Rental_Management_System.Models.Invoice>
+
+@{
+    ViewBag.Title = "Invoices";
+}
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">Invoice Management</h2>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Generated Invoices</h4>
+        </div>
+
+        <div class="card-body">
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-striped table-hover">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Invoice ID</th>
+                                <th>Invoice Number</th>
+                                <th>Booking ID</th>
+                                <th>Invoice Date</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.InvoiceId</td>
+                                    <td>@item.InvoiceNumber</td>
+                                    <td>@item.BookingId</td>
+                                    <td>@item.InvoiceDate.ToString("dd-MM-yyyy")</td>
+                                    <td>₹ @item.TotalAmount.ToString("N2")</td>
+                                    <td>
+                                        <span class="badge bg-success">
+                                            @item.InvoiceStatus
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(
+                                            "View Invoice",
+                                            "Details",
+                                            new { id = item.InvoiceId },
+                                            new { @class = "btn btn-primary btn-sm" }
+                                        )
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    No invoices are available.
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

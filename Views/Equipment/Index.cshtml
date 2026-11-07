@@ -1,0 +1,104 @@
+﻿
+@model IEnumerable<Medical_Equipment_Rental_Management_System.Models.Equipment>
+
+@{
+    ViewBag.Title = "Equipment";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="dashboard-title">Equipment Management</h2>
+        <p class="dashboard-subtitle">
+            Manage medical equipment available for rental.
+        </p>
+    </div>
+
+    <a href="@Url.Action("Create")" class="btn btn-primary">
+        <i class="fa fa-plus me-2"></i>Add Equipment
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close"
+                data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="dashboard-panel">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Equipment</th>
+                    <th>Category</th>
+                    <th>Price / Day</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>#@item.EquipmentId</td>
+
+                            <td class="fw-semibold">
+                                @item.EquipmentName
+                            </td>
+
+                            <td>@item.Category</td>
+
+                            <td>₹@item.PricePerDay.ToString("N2")</td>
+
+                            <td>@item.Stock</td>
+
+                            <td>
+                                @if (item.Stock > 0)
+                                {
+                                    <span class="badge bg-success">
+                                        Available
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+                                        Out of Stock
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = item.EquipmentId })"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <a href="@Url.Action("Delete", new { id = item.EquipmentId })"
+                                   class="btn btn-sm btn-outline-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7"
+                            class="text-center text-muted py-4">
+                            No equipment found. Add your first equipment.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

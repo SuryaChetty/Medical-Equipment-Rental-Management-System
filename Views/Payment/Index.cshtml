@@ -1,0 +1,153 @@
+﻿
+@model IEnumerable<Medical_Equipment_Rental_Management_System.Models.Payment>
+
+@{
+    ViewBag.Title = "Payment Verification";
+}
+
+<div class="container-fluid mt-4">
+
+    <h2 class="dashboard-title mb-3">Payment Verification</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="dashboard-panel">
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Booking ID</th>
+                        <th>Customer</th>
+                        <th>Equipment</th>
+                        <th>Amount</th>
+                        <th>UPI Transaction ID</th>
+                        <th>Status</th>
+                        <th>Submitted Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.PaymentId</td>
+                                <td>#@item.BookingId</td>
+
+                                <td>
+                                    @(item.RentalBooking != null &&
+                                      item.RentalBooking.Customer != null
+                                        ? item.RentalBooking.Customer.CustomerName
+                                        : "-")
+                                </td>
+
+                                <td>
+                                    @(item.RentalBooking != null &&
+                                      item.RentalBooking.Equipment != null
+                                        ? item.RentalBooking.Equipment.EquipmentName
+                                        : "-")
+                                </td>
+
+                                <td>₹@item.Amount.ToString("N2")</td>
+
+                                <td>@item.UpiTransactionId</td>
+
+                                <td>
+                                    @if (item.PaymentStatus == "Success")
+                                    {
+                                        <span class="badge bg-success">
+                                            Success
+                                        </span>
+                                    }
+                                    else if (item.PaymentStatus == "PendingVerification")
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Awaiting Verification
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            @item.PaymentStatus
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @item.SubmittedDate.ToString("dd-MMM-yyyy hh:mm tt")
+                                </td>
+
+                                <td>
+                                    @if (item.PaymentStatus == "PendingVerification")
+                                    {
+                                        using (Html.BeginForm(
+                                            "Approve",
+                                            "Payment",
+                                            new { id = item.PaymentId },
+                                            FormMethod.Post,
+                                            new { style = "display:inline" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-success"
+                                                    onclick="return confirm('Have you verified the actual UPI payment in your bank account?');">
+                                                Approve
+                                            </button>
+                                        }
+
+                                        using (Html.BeginForm(
+                                            "Reject",
+                                            "Payment",
+                                            new { id = item.PaymentId },
+                                            FormMethod.Post,
+                                            new { style = "display:inline" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Are you sure you want to reject this payment?');">
+                                                Reject
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Verified</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                No payment records found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

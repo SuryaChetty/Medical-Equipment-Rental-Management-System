@@ -1,0 +1,84 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.RentalBooking
+
+@{
+    ViewBag.Title = "Booking Details";
+
+    int rentalDays =
+        (Model.EndDate.Date - Model.StartDate.Date).Days + 1;
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Booking Details</h2>
+    <p class="dashboard-subtitle">
+        Complete information about this rental booking.
+    </p>
+</div>
+
+<div class="dashboard-panel">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="fw-bold">Booking #@Model.BookingId</h5>
+
+        <span class="badge bg-primary">
+            @Model.BookingStatus
+        </span>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <h6 class="text-muted">CUSTOMER INFORMATION</h6>
+            <h5>@Model.Customer.CustomerName</h5>
+            <p class="mb-1">@Model.Customer.Email</p>
+            <p>@Model.Customer.Phone</p>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">EQUIPMENT INFORMATION</h6>
+            <h5>@Model.Equipment.EquipmentName</h5>
+            <p class="mb-1">@Model.Equipment.Category</p>
+            <p>₹@Model.Equipment.PricePerDay.ToString("N2") per day</p>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">RENTAL START DATE</h6>
+            <h5>@Model.StartDate.ToString("dd MMM yyyy")</h5>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">RENTAL END DATE</h6>
+            <h5>@Model.EndDate.ToString("dd MMM yyyy")</h5>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">RENTAL DAYS</h6>
+            <h5>@rentalDays Days</h5>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">QUANTITY</h6>
+            <h5>@Model.Quantity</h5>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">BOOKING DATE</h6>
+            <h5>@Model.BookingDate.ToString("dd MMM yyyy")</h5>
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="text-muted">TOTAL RENTAL AMOUNT</h6>
+            <h3 class="text-primary fw-bold">
+                ₹@Model.TotalAmount.ToString("N2")
+            </h3>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <a href="@Url.Action("Index")"
+       class="btn btn-light border">
+        Back to Bookings
+    </a>
+</div>

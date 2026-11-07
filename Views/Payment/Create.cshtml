@@ -1,0 +1,121 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.RentalBooking
+
+@{
+    ViewBag.Title = "UPI QR Payment";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fa fa-qrcode"></i>
+                        UPI QR Payment
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <h5>Booking Details</h5>
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Booking ID</th>
+                            <td>#@Model.BookingId</td>
+                        </tr>
+
+                        <tr>
+                            <th>Customer</th>
+                            <td>@Model.Customer.CustomerName</td>
+                        </tr>
+
+                        <tr>
+                            <th>Equipment</th>
+                            <td>@Model.Equipment.EquipmentName</td>
+                        </tr>
+
+                        <tr>
+                            <th>Quantity</th>
+                            <td>@Model.Quantity</td>
+                        </tr>
+
+                        <tr class="table-success">
+                            <th>Total Amount</th>
+                            <td>
+                                <h5 class="text-success mb-0">
+                                    ₹@Model.TotalAmount.ToString("N2")
+                                </h5>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="text-center my-4">
+
+                        <h5>Scan QR Code to Pay</h5>
+
+                        <img src="data:image/png;base64,@ViewBag.QrCodeBase64"
+                             alt="UPI Payment QR Code"
+                             class="img-fluid border rounded p-2"
+                             style="width:250px;height:250px;" />
+
+                        <p class="mt-3">
+                            <strong>UPI ID:</strong>
+                            @ViewBag.UPIId
+                        </p>
+
+                        <p class="text-muted">
+                            Scan using Google Pay, PhonePe or Paytm.
+                        </p>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        After completing the payment, enter your UPI
+                        transaction ID below. Your booking will be confirmed
+                        only after admin verification.
+                    </div>
+
+                    @using (Html.BeginForm(
+                        "Submit",
+                        "Payment",
+                        FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="bookingId"
+                               value="@Model.BookingId" />
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                UPI Transaction ID / UTR
+                            </label>
+
+                            <input type="text"
+                                   name="upiTransactionId"
+                                   class="form-control"
+                                   maxlength="100"
+                                   required
+                                   placeholder="Enter your UPI transaction ID" />
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+                            Submit Payment Details
+                        </button>
+                    }
+
+                    <a href="@Url.Action("Index", "RentalBooking")"
+                       class="btn btn-outline-secondary w-100 mt-2">
+                        Back to Bookings
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

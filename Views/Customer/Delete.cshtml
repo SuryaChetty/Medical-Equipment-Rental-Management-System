@@ -1,0 +1,46 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.Customer
+
+@{
+    ViewBag.Title = "Deactivate Customer";
+}
+
+<div class="mb-4">
+    <h2 class="dashboard-title">Deactivate Customer</h2>
+    <p class="dashboard-subtitle">Review the customer before deactivation.</p>
+</div>
+
+<div class="dashboard-panel">
+
+    <div class="alert alert-warning">
+        Are you sure you want to deactivate this customer?
+        This will not permanently delete their database record.
+    </div>
+
+    <dl class="row">
+        <dt class="col-md-3">Customer ID</dt>
+        <dd class="col-md-9">@Model.CustomerId</dd>
+
+        <dt class="col-md-3">Name</dt>
+        <dd class="col-md-9">@Model.CustomerName</dd>
+
+        <dt class="col-md-3">Email</dt>
+        <dd class="col-md-9">@Model.Email</dd>
+
+        <dt class="col-md-3">Phone</dt>
+        <dd class="col-md-9">@Model.Phone</dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Customer", new { id = Model.CustomerId }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn btn-danger">
+            Confirm Deactivation
+        </button>
+
+        <a href="@Url.Action("Index")" class="btn btn-light border ms-2">
+            Cancel
+        </a>
+    }
+</div>

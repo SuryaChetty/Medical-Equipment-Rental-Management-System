@@ -1,0 +1,164 @@
+﻿
+@model Medical_Equipment_Rental_Management_System.Models.Invoice
+
+@{
+    ViewBag.Title = "Invoice Details";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+
+            <div class="card shadow" id="invoice">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <h2 class="mb-0">MediRent</h2>
+                    <p class="mb-0">
+                        Medical Equipment Rental Management System
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="text-center mb-4">
+                        <h3>INVOICE</h3>
+                        <h5 class="text-success">
+                            @Model.InvoiceNumber
+                        </h5>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6">
+                            <h5>Invoice Details</h5>
+
+                            <p>
+                                <strong>Invoice Number:</strong>
+                                @Model.InvoiceNumber
+                            </p>
+
+                            <p>
+                                <strong>Invoice Date:</strong>
+                                @Model.InvoiceDate.ToString("dd-MM-yyyy")
+                            </p>
+
+                            <p>
+                                <strong>Booking ID:</strong>
+                                @Model.BookingId
+                            </p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5>Booking Details</h5>
+
+                            <p>
+                                <strong>Booking ID:</strong>
+                                @Model.RentalBooking.BookingId
+                            </p>
+
+                            <p>
+                                <strong>Booking Status:</strong>
+                                @Model.RentalBooking.BookingStatus
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <h5>Invoice Summary</h5>
+
+                    <table class="table table-bordered mt-3">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Medical Equipment Rental - Booking
+                                    #@Model.BookingId
+                                </td>
+
+                                <td class="text-end">
+                                    ₹ @Model.TotalAmount.ToString("N2")
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th class="text-end">Total Amount</th>
+                                <th class="text-end">
+                                    ₹ @Model.TotalAmount.ToString("N2")
+                                </th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                    <div class="text-center mt-4">
+                        <h5 class="text-success">
+                            Payment Successfully Verified
+                        </h5>
+
+                        <p>Thank you for choosing MediRent!</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="text-center mt-3 mb-5">
+
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="window.print()">
+                    <i class="fa fa-print"></i> Print Invoice
+                </button>
+
+                @Html.ActionLink(
+                    "Back to Invoices",
+                    "Index",
+                    "Invoice",
+                    null,
+                    new { @class = "btn btn-secondary" }
+                )
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #invoice, #invoice * {
+            visibility: visible;
+        }
+
+        #invoice {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            box-shadow: none !important;
+        }
+
+        .btn {
+            display: none !important;
+        }
+    }
+</style>
